@@ -19,26 +19,46 @@
         activeObjects: []
     };
     // private methods
-    _jsAnim = {
+   var  _jsAnim = {
         propertiesList: [],
-        addPropertiesToObject: function(){
-
+        setNewAnimatedObj: function(target){
+            // cria um novo objeto contento todas as propriedades que nós atribuirmos, tipo o jquery
+            // por enquanto sem nenhuma propriedade de animação, só de instância de novo objeto
+            var obj = new jsAnim();
+            obj[0] = target;
+            obj.name = target;
+            obj = this.createJSAObjModel(obj, jsAnim);
+            return obj;
+        },
+        createJSAObjModel: function(obj, target){
+            for(var x in target){
+                obj[x] = target[x];
+            }
+            return obj;
         },
         configureSprite: function(){
 
         }
     };
+
     // public methods
-    var jsAnim = {
-        conf: {
-            update: function(obj){
-
-            }
-        },
-        addNewAnimation: function(ident){
-
+    var jsAnimPub = {
+        update: function(obj, newRules){
+            _jsAnim.createJSAObjModel(obj, newRules);
+            return this;
         }
-    }
+    };
+    //
+    var jsAnim = function(target){
+        if(target){
+            var targ = _jsAnim.setNewAnimatedObj(target);
+        } else{
+            targ = this;
+        };
+        return targ;
+    };
+    // configura metodos publicos;
+    _jsAnim.createJSAObjModel(jsAnim, jsAnimPub);
     w["jsAnim"] = jsAnim;
     
 })(window);
