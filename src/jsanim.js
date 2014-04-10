@@ -25,9 +25,18 @@
             // cria um novo objeto contento todas as propriedades que nós atribuirmos, tipo o jquery
             // por enquanto sem nenhuma propriedade de animação, só de instância de novo objeto
             var obj = new jsAnim();
-            obj[0] = target;
-            obj.name = target;
+            // guarda a referência do objeto original ou array de objetos
+            obj[0] = this.getObject(target);
+            obj.ident = target;
             obj = this.createJSAObjModel(obj, jsAnim);
+            return obj;
+        },
+        //prevê IE8 +
+        getObject: function(target){
+            var obj = document.querySelectorAll(target);
+            if (obj.length === 1){
+                obj = obj[0];
+            }
             return obj;
         },
         createJSAObjModel: function(obj, target){
@@ -35,9 +44,6 @@
                 obj[x] = target[x];
             }
             return obj;
-        },
-        configureSprite: function(){
-
         }
     };
 
@@ -45,6 +51,11 @@
     var jsAnimPub = {
         update: function(obj, newRules){
             _jsAnim.createJSAObjModel(obj, newRules);
+            return this;
+        },
+        // vai servir pra setar velocidade de deslocamento, posição inicial, etc
+        setConfig: function(obj){
+            this.ident = obj.ident;
             return this;
         }
     };
